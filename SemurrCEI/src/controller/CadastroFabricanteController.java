@@ -97,8 +97,8 @@ public class CadastroFabricanteController
             //pega uma fabricante da view
             Fabricante fabricante = new Fabricante();
             
-            //chama helper metodo obterModeloComId passando unidade como parametro
-            fabricante = helper.obterModeloComId();         
+            //chama helper metodo obterModelo passando unidade como parametro
+            fabricante = helper.obterModelo();         
             
                 try {
                     //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
@@ -145,7 +145,7 @@ public class CadastroFabricanteController
         Fabricante fabricante = new Fabricante();
             
         //chama helper metodo obtermodelo com id passando fabricante como parametro
-        fabricante = helper.obterModeloComId();         
+        fabricante = helper.obterModelo();         
 
             try
             {

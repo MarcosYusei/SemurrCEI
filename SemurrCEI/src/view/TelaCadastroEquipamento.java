@@ -133,7 +133,7 @@ public class TelaCadastroEquipamento extends javax.swing.JFrame {
         getContentPane().add(txtEquipamento, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 130, 290, 30));
 
         txtStatus.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        txtStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONE UM STATUS", "FUNCIONAL", "MANUTENCAO", "INSERVIVEL" }));
+        txtStatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "SELECIONE UM STATUS", "FUNCIONAL", "MANUTENCAO", "INSERVIVEL", "DISPONIVEL", "INDISPONIVEL" }));
         getContentPane().add(txtStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, 280, 30));
 
         lblUnidade.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -1140,13 +1140,13 @@ public class TelaCadastroEquipamento extends javax.swing.JFrame {
             //as linhas abaixo define o tamanho das colunas da tabela
             //tabela pegue o modelo de coluna, pegue a coluna zero e sete a largura
             jTabelaCadEquip.getColumnModel().getColumn(0).setPreferredWidth(74);
-            jTabelaCadEquip.getColumnModel().getColumn(1).setPreferredWidth(162);
+            jTabelaCadEquip.getColumnModel().getColumn(1).setPreferredWidth(155);
             jTabelaCadEquip.getColumnModel().getColumn(2).setPreferredWidth(100);
             jTabelaCadEquip.getColumnModel().getColumn(3).setPreferredWidth(95);
             jTabelaCadEquip.getColumnModel().getColumn(4).setPreferredWidth(95);
             jTabelaCadEquip.getColumnModel().getColumn(5).setPreferredWidth(162);
-            jTabelaCadEquip.getColumnModel().getColumn(6).setPreferredWidth(95);
-            jTabelaCadEquip.getColumnModel().getColumn(7).setPreferredWidth(95);
+            jTabelaCadEquip.getColumnModel().getColumn(6).setPreferredWidth(90);
+            jTabelaCadEquip.getColumnModel().getColumn(7).setPreferredWidth(90);
             jTabelaCadEquip.getColumnModel().getColumn(8).setPreferredWidth(96);
             jTabelaCadEquip.getColumnModel().getColumn(9).setPreferredWidth(95);
             jTabelaCadEquip.getColumnModel().getColumn(10).setPreferredWidth(175);      

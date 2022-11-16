@@ -4,14 +4,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import model.Emprestimo;
-import model.Equipamento;
 import model.TipoEquipamento;
 import model.Unidade;
 import view.TelaCadastroEmprestimo;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Nome;
-
 
 public class CadastroEmprestimoHelper 
 {
@@ -28,14 +26,14 @@ public class CadastroEmprestimoHelper
     public Emprestimo obterModeloSemID()
     {
         
-
        Unidade unidade = (Unidade) view.getTxtUnidade().getSelectedItem();//Unidade unidade recebe passado para unidade a view gettextunidade e pegue o texto
        TipoEquipamento tipoequip = (TipoEquipamento) view.getTxtTipoEquip().getSelectedItem();//TipoEquipamento tipoequipamento recebe passado para unidade a view getTxtTipoEquip e pegue o texto
-       Equipamento equipamento = (Equipamento) view.getTxtEquipamento().getSelectedItem();//Equipamento equipamento recebe passando para equipamento a view getTxtEquipamento e pegue o texto
+       String modelo = view.getTxtModelo().getSelectedItem().toString();//String modelo recebe view pegue o getTextModelo e pegue o texto
        Unidade destino = (Unidade) view.getTxtDestino().getSelectedItem();//Unidade unidade recebe passado para unidade a view getTxtDestino e pegue o texto
        Nome nome = (Nome) view.getTxtNome().getSelectedItem();//Nome nome recebe passado para nome a view getTxtNome e pegue o texto
+       
        Date dataSaida = (Date) view.getTxtDataSaida().getDate();//Date dataSaida recebe passado para Date a view getTxtDataSaida e pegue o texto
-       Date dataDevolucao = (Date) view.getTxtDataDevolucao().getDate();//Date dataDevolucao recebe passado para Date a view getTxtDataDevolucao e pegue o texto
+       Date dataDevolucao = (Date)view.getTxtDataDevolucao().getDate();//Date dataDevolucao recebe passado para Date a view getTxtDataDevolucao e pegue o texto
        String status = view.getTxtStatus().getSelectedItem().toString();//String status recebe view pegue o getselecteditem para string
        String tipo = view.getTxtTipo().getSelectedItem().toString();//String tipo recebe view pegue o getselecteditem para string
        String observacao = view.getTxtObservacao().getText();//String observacao recebe view pegue o getTextObservacao e pegue o texto
@@ -56,50 +54,12 @@ public class CadastroEmprestimoHelper
        }           
        
        //construir objeto do tipo emprestimo
-       Emprestimo emprestimo = new Emprestimo(unidade,tipoequip,equipamento,destino,nome,dataSaida,dataDevolucao,status,tipo,observacao,tombo,serie);      
+       Emprestimo emprestimo = new Emprestimo(unidade,tipoequip,modelo,destino,nome,dataSaida,dataDevolucao,status,tipo,observacao,tombo,serie);      
 
        return emprestimo;        
         
     }    
     
-
-    //metodo obter modelo com todos os campos
-    public Emprestimo obterModelo()
-    {
-       Integer id = Integer.parseInt(view.getTxtId().getText());
-       Unidade unidade = (Unidade) view.getTxtUnidade().getSelectedItem();//Unidade unidade recebe passado para unidade a view gettextunidade e pegue o texto
-       TipoEquipamento tipoequip = (TipoEquipamento) view.getTxtTipoEquip().getSelectedItem();//TipoEquipamento tipoequipamento recebe passado para unidade a view getTxtTipoEquip e pegue o texto
-       Equipamento equipamento = (Equipamento) view.getTxtEquipamento().getSelectedItem();//Equipamento equipamento recebe passando para equipamento a view getTxtEquipamento e pegue o texto
-       Unidade destino = (Unidade) view.getTxtDestino().getSelectedItem();//Unidade unidade recebe passado para unidade a view getTxtDestino e pegue o texto
-       Nome nome = (Nome) view.getTxtNome().getSelectedItem();//Nome nome recebe passado para nome a view getTxtNome e pegue o texto
-       Date dataSaida = (Date) view.getTxtDataSaida().getDate();//Date dataSaida recebe passado para Date a view getTxtDataSaida e pegue o texto
-       Date dataDevolucao = (Date) view.getTxtDataDevolucao().getDate();//Date dataDevolucao recebe passado para Date a view getTxtDataDevolucao e pegue o texto
-       String status = view.getTxtStatus().getSelectedItem().toString();//String status recebe view pegue o getselecteditem para string
-       String tipo = view.getTxtTipo().getSelectedItem().toString();//String tipo recebe view pegue o getselecteditem para string
-       String observacao = view.getTxtObservacao().getText();//String observacao recebe view pegue o getTextObservacao e pegue o texto
-       String tombo = view.getTxtTombo().getSelectedItem().toString();//String tombo recebe view pegue o getTextTombo e pegue o texto
-       String serie = view.getTxtSerie().getSelectedItem().toString();//String serie recebe view pegue o getTextSerie e pegue o texto 
-      
-       if(view.getTxtObservacao().getText() == null)
-       {
-           
-           observacao = "NULL";
-           
-       } 
-       else
-       {
-           
-           observacao = view.getTxtObservacao().getText();//String observacao recebe view pegue o getTextObservacao e pegue o texto   
-           
-       }           
-       
-       //construir objeto do tipo emprestimo
-       Emprestimo emprestimo = new Emprestimo(id,unidade,tipoequip,equipamento,destino,nome,dataSaida,dataDevolucao,status,tipo,observacao,tombo,serie);      
-
-       return emprestimo;   
-        
-    }
-
     //metodo para setar modelo
     public void setModelo()
     {
@@ -109,7 +69,7 @@ public class CadastroEmprestimoHelper
         view.txtId.setText(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 0).toString());
         view.txtUnidade.setSelectedItem(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 1).toString());   
         view.txtTipoEquip.setSelectedItem(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 2).toString());   
-        view.txtEquipamento.setSelectedItem(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 3).toString());   
+        view.txtModelo.setSelectedItem(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 3).toString());   
         view.txtDestino.setSelectedItem(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 4).toString());
         view.txtNome.setSelectedItem(view.jTabelaCadEmprestimo.getModel().getValueAt(setar, 5).toString());   
 
@@ -169,7 +129,7 @@ public class CadastroEmprestimoHelper
     {
         view.getTxtUnidade().setEnabled(false);
         view.getTxtTipoEquip().setEnabled(false);
-        view.getTxtEquipamento().setEnabled(false);
+        view.getTxtModelo().setEnabled(false);
         view.getTxtDestino().setEnabled(false);
         view.getTxtNome().setEnabled(false);
         view.getTxtDataSaida().setEnabled(false);
@@ -181,7 +141,7 @@ public class CadastroEmprestimoHelper
         
         view.btnEditar.setEnabled(false);
         view.btnEmprestar.setEnabled(false);
-        view.btnExcluir.setEnabled(true);
+        view.btnDevolver.setEnabled(true);
         view.btnPesquisar.setEnabled(false);        
     }
     
@@ -191,7 +151,7 @@ public class CadastroEmprestimoHelper
         
         view.getTxtUnidade().setEnabled(true);
         view.getTxtTipoEquip().setEnabled(true);
-        view.getTxtEquipamento().setEnabled(true);
+        view.getTxtModelo().setEnabled(true);
         view.getTxtDestino().setEnabled(true);
         view.getTxtNome().setEnabled(true);
         view.getTxtDataSaida().setEnabled(true);
@@ -203,7 +163,7 @@ public class CadastroEmprestimoHelper
         
         view.btnEditar.setEnabled(true);
         view.btnEmprestar.setEnabled(true);
-        view.btnExcluir.setEnabled(true);
+        view.btnDevolver.setEnabled(true);
         view.btnPesquisar.setEnabled(true);           
         
     }                   

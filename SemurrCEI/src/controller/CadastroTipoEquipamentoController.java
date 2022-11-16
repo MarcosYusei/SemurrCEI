@@ -99,7 +99,7 @@ public class CadastroTipoEquipamentoController
         TipoEquipamento tipoequipamento = new TipoEquipamento();
         
         //chama helper metodo obterModeloComId passando unidade como parametro
-        tipoequipamento = helper.obterModeloComId();      
+        tipoequipamento = helper.obterModelo();      
         
         try
         {
@@ -149,7 +149,7 @@ public class CadastroTipoEquipamentoController
         TipoEquipamento tipoequipamento = new TipoEquipamento();
             
         //chama helper metodo obtermodelo com id passando tipoequipamento como parametro
-        tipoequipamento = helper.obterModeloComId();         
+        tipoequipamento = helper.obterModelo();         
         
         try
         {

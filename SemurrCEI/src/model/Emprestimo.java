@@ -5,17 +5,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Emprestimo 
+public class Emprestimo
 {
     
-    public Integer id;
+    public int id;
     public Unidade unidade = new Unidade();
     public TipoEquipamento tipoequip = new TipoEquipamento();
-    public Equipamento equipamento = new Equipamento();
+    public String modelo;
     public Unidade destino = new Unidade();
     public Nome nome;
-    public Date dataSaida;
-    public Date dataDevolucao;
+    public Date dataSaida = new Date();
+    public Date dataDevolucao = new Date();
     public String status;
     public String tipo;
     public String observacao;
@@ -23,17 +23,17 @@ public class Emprestimo
     public String serie;    
     
     //Metodo construtor passando todos campos como obrigatorios
-    public Emprestimo(Integer id,Unidade unidade, TipoEquipamento tipoequip,Equipamento equipamento,Unidade destino, Nome nome, Date dataSaida, Date dataDevolucao, String status, String tipo, String observacao, String tombo, String serie) {
+    public Emprestimo(int id,Unidade unidade, TipoEquipamento tipoequip,String modelo,Unidade destino, Nome nome, Date dataSaida, Date dataDevolucao, String status, String tipo, String observacao, String tombo, String serie) {
         this.id = id;
         this.unidade = unidade;
         this.tipoequip = tipoequip;
-        this.equipamento = equipamento;
+        this.modelo = modelo;
         this.destino = destino;        
         this.nome = nome;
         try
         {
             
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
             
             String dataParastring = sdf.format(dataSaida);
             Date dateDeString = sdf.parse(dataParastring);
@@ -51,7 +51,7 @@ public class Emprestimo
         try
         {
             
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.UK);
             
             String dataParastring = sdf.format(dataDevolucao);
             Date dateDeString = sdf.parse(dataParastring);
@@ -70,17 +70,17 @@ public class Emprestimo
     }
     
     //metodo construtor sem o id
-    public Emprestimo(Unidade unidade, TipoEquipamento tipoequip,Equipamento equipamento,Unidade destino, Nome nome, Date dataSaida, Date dataDevolucao, String status, String tipo, String observacao, String tombo, String serie) {
+    public Emprestimo(Unidade unidade, TipoEquipamento tipoequip,String modelo,Unidade destino, Nome nome, Date dataSaida, Date dataDevolucao, String status, String tipo, String observacao, String tombo, String serie) {
         this.unidade = unidade;
         this.tipoequip = tipoequip;
-        this.equipamento = equipamento;
+        this.modelo = modelo;
         this.destino = destino;        
         this.nome = nome;        
         this.nome = nome;
         try
         {
             
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             
             String dataParastring = sdf.format(dataSaida);
             Date dateDeString = sdf.parse(dataParastring);
@@ -98,7 +98,7 @@ public class Emprestimo
         try
         {
             
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
             
             String dataParastring = sdf.format(dataDevolucao);
             Date dateDeString = sdf.parse(dataParastring);
@@ -124,11 +124,11 @@ public class Emprestimo
     }
 
     //Getters e setters
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -148,12 +148,12 @@ public class Emprestimo
         this.tipoequip = tipoequip;
     }
 
-    public Equipamento getEquipamento() {
-        return equipamento;
+    public String getModelo() {
+        return modelo;
     }
 
-    public void setEquipamento(Equipamento equipamento) {
-        this.equipamento = equipamento;
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
     }
 
     public Unidade getDestino() {
@@ -226,10 +226,9 @@ public class Emprestimo
 
     public void setSerie(String serie) {
         this.serie = serie;
-    }  
+    }   
     
-    @Override
-    public String toString()
+    public String StatustoString()
     {
         
         return getStatus();

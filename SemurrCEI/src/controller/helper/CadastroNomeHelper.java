@@ -27,7 +27,7 @@ public class CadastroNomeHelper
     } 
     
     //metodo obter modelo com id
-    public Nome obterModeloComId()
+    public Nome obterModelo()
     {
         
         Integer id = Integer.parseInt(view.getTxtId().getText());//Integer id recebe convert para int view gettxtid pegue o texto

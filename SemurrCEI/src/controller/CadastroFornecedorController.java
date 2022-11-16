@@ -98,7 +98,7 @@ public class CadastroFornecedorController
         Fornecedor fornecedor = new Fornecedor();
         
         //chama helper metodo obterModeloComId passando unidade como parametro
-        fornecedor = helper.obterModeloComId();      
+        fornecedor = helper.obterModelo();      
         
         try
         {
@@ -148,7 +148,7 @@ public class CadastroFornecedorController
         Fornecedor fornecedor = new Fornecedor();
             
         //chama helper metodo obtermodelo com id passando tipoequipamento como parametro
-        fornecedor = helper.obterModeloComId();         
+        fornecedor = helper.obterModelo();         
         
         try
         {

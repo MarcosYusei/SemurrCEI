@@ -98,7 +98,7 @@ public class CadastroNomeController
             Nome nome = new Nome();
             
             //chama helper metodo obterModeloComId passando nome como parametro
-            nome = helper.obterModeloComId();      
+            nome = helper.obterModelo();      
             
                 try {
                     //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
@@ -145,7 +145,7 @@ public class CadastroNomeController
         Nome nome = new Nome();
             
         //chama helper metodo obtermodelo com id passando nome como parametro
-        nome = helper.obterModeloComId();          
+        nome = helper.obterModelo();          
 
             try
             {

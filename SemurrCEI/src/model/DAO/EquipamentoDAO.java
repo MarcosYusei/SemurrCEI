@@ -73,7 +73,7 @@ public class EquipamentoDAO
     {  
         
         String sql = "update equipamento set unidade = ?, tipoequip = ?, tombo = ?, serie = ?, fornecedor = ?,"
-                + "fabricante = ?, modelo = ?, status = ?, equipamento = ?, observacao = ? where id = ?";
+        + "fabricante = ?, modelo = ?, status = ?, equipamento = ?, observacao = ? where id = ?";
         
         //criamos um statement para executar a query sql
         PreparedStatement pstm = conexao.prepareStatement(sql);
@@ -113,7 +113,6 @@ public class EquipamentoDAO
             }       
         
     }
-    
     
     //função deletar
     public void deletar(Equipamento equipamento) throws SQLException
@@ -194,6 +193,7 @@ public class EquipamentoDAO
             equipamento.setFabricante(fabricante);
 
             equipamento.setModelo(rs.getString("modelo"));
+            
             equipamento.setStatus(rs.getString("status"));
             equipamento.setEquipamento(rs.getString("equipamento"));
             equipamento.setObservacao(rs.getString("observacao"));
@@ -426,13 +426,12 @@ public class EquipamentoDAO
      
  }       
  
- //metodo para trazer todos modelos de equipamento por tipo equipamento
  public ArrayList<Equipamento> selecionarAllModeloPorTipoEquip(String tipoequipamentonome) throws SQLException
  {
      
      ArrayList equipamentos = new ArrayList();
      //Faz a instancia da classe Equipamento
-     String sql = " select e.modelo from equipamento as e inner join unidade u on e.unidade = u.id inner join tipoequipamento as tp on e.tipoequip = tp.id inner join fornecedor as f on e.fornecedor = f.id inner join fabricante as fab on e.fabricante = fab.id where tp.tipoequipamentonome = ?";
+     String sql = "select *,e.modelo from equipamento as e inner join unidade u on e.unidade = u.id inner join tipoequipamento as tp on e.tipoequip = tp.id inner join fornecedor as f on e.fornecedor = f.id inner join fabricante as fab on e.fabricante = fab.id where tp.tipoequipamentonome = ? and status = 'FUNCIONAL'";
      //Instrução SQL para seleção de registro específico da tabela Equipamento; 
      
      try
@@ -447,7 +446,38 @@ public class EquipamentoDAO
             
             Equipamento equipamento = new Equipamento();
             //Laço de repetição para preencher com os dados do banco o objeto equipamento;
+            equipamento.setId(rs.getInt("id"));
+            
+            Unidade unidade1 = new Unidade();
+            unidade1.setId(rs.getInt("id"));
+            unidade1.setUnidadenome(rs.getString("unidadenome"));
+            
+            equipamento.setUnidade(unidade1);
+            
+            TipoEquipamento tipoequipamento = new TipoEquipamento();
+            tipoequipamento.setId(rs.getInt("id"));
+            tipoequipamento.setTipoequipamento(rs.getString("tipoequipamentonome"));
+            
+            equipamento.setTipoequip(tipoequipamento);
+            
+            equipamento.setTombo(rs.getString("tombo"));
+            equipamento.setSerie(rs.getString("serie"));
+            
+            Fornecedor fornecedor = new Fornecedor();
+            fornecedor.setId(rs.getInt("id"));
+            fornecedor.setFornecedornome(rs.getString("fornecedornome"));
+            
+            equipamento.setFornecedor(fornecedor);
+            
+            Fabricante fabricante = new Fabricante();
+            fabricante.setId(rs.getInt("id"));
+            fabricante.setFabricantenome(rs.getString("fabricantenome"));
+            
+            equipamento.setFabricante(fabricante);
+
             equipamento.setModelo(rs.getString("modelo"));
+            equipamento.setStatus(rs.getString("status"));
+            equipamento.setEquipamento(rs.getString("equipamento"));
             
             equipamentos.add(equipamento);            
             
@@ -473,6 +503,7 @@ public class EquipamentoDAO
       return equipamentos;               
      
  }  
+ 
     //metodo para trazer todos equipamentos por fornecedor
     public ArrayList selecionarAllEquipPorFornecedor(String fornecedor) throws SQLException
     {
@@ -1195,5 +1226,74 @@ public class EquipamentoDAO
         
         return equipamentos;        
     }           
+
+    //metodo para trazer o equipamento por modelo passando equip
+    public Equipamento selecioneEquipporModelo(String equipamentoU) throws SQLException {
+
+        //Faz a instancia da classe Equipamento  
+        Equipamento equipamento = new Equipamento();
+        
+        String sql = "select * from equipamento as e inner join unidade u on e.unidade = u.id inner join tipoequipamento as tp on e.tipoequip = tp.id inner join fornecedor as f on e.fornecedor = f.id inner join fabricante as fab on e.fabricante where e.modelo = ? group by e.id";
+
+        try {
+
+            PreparedStatement pstm = conexao.prepareStatement(sql);
+
+            pstm.setString(1, equipamentoU);
+
+            ResultSet rs = pstm.executeQuery();
+
+            while (rs.next()) {
+                //Laço de repetição para preencher com os dados do banco o objeto equipamento;
+                equipamento.setId(rs.getInt("id"));
+
+                Unidade unidade = new Unidade();
+                unidade.setId(rs.getInt("id"));
+                unidade.setUnidadenome(rs.getString("unidadenome"));
+
+                equipamento.setUnidade(unidade);
+
+                TipoEquipamento tipoequipamento = new TipoEquipamento();
+                tipoequipamento.setId(rs.getInt("id"));
+                tipoequipamento.setTipoequipamento(rs.getString("tipoequipamentonome"));
+
+                equipamento.setTipoequip(tipoequipamento);
+
+                equipamento.setTombo(rs.getString("tombo"));
+                equipamento.setSerie(rs.getString("serie"));
+
+                Fornecedor fornecedor = new Fornecedor();
+                fornecedor.setId(rs.getInt("id"));
+                fornecedor.setFornecedornome(rs.getString("fornecedornome"));
+
+                equipamento.setFornecedor(fornecedor);
+
+                Fabricante fabricante = new Fabricante();
+                fabricante.setId(rs.getInt("id"));
+                fabricante.setFabricantenome(rs.getString("fabricantenome"));
+
+                equipamento.setFabricante(fabricante);
+
+                equipamento.setModelo(rs.getString("modelo"));
+
+                equipamento.setStatus(rs.getString("status"));
+                equipamento.setEquipamento(rs.getString("equipamento"));
+                equipamento.setObservacao(rs.getString("observacao"));
+                //"seta" os atributos da classe Equipamento com os dados dos campos do banco - pega os dados do banco para pesquisa no formulário;
+
+            }
+        } catch (SQLException ex) {
+
+            JOptionPane.showMessageDialog(null, "Error ao pesquisar todos equipamentos no banco de dados!" + ex, "Error!", JOptionPane.INFORMATION_MESSAGE);
+
+        } finally {
+            //feche a conexao
+            conexao.close();
+
+        }
+        //retorne o array equipamentos  
+        return equipamento;
+    }
+
     
 }

@@ -3,7 +3,9 @@ package controller;
 import controller.helper.CadastroEmprestimoHelper;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -47,6 +49,287 @@ public class CadastroEmprestimoController
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }    
     
+    //metodo para efetuar emprestimo
+    public void EmprestarEquipamento()
+    {
+        
+        //comparações logicas
+        if(view.getTxtUnidade().getSelectedIndex() != 0 && view.getTxtTipoEquip().getSelectedIndex() != 0 && view.getTxtModelo().getSelectedIndex() != 0 && view.getTxtDestino().getSelectedIndex() != 0
+        && view.getTxtNome().getSelectedIndex() != 0 && view.getTxtDataSaida().getDate()==null && view.getTxtDataDevolucao().getDate()==null && view.getTxtStatus().getSelectedIndex() != 0 && view.getTxtObservacao().getText().trim().isEmpty()
+        && view.getTxtTombo().getSelectedIndex() != 0 && view.getTxtSerie().getSelectedIndex() != 0)
+        {
+            
+            JOptionPane.showMessageDialog(null, "Campos obrigatorios vazios, selecione-os!!","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }   
+        if(view.getTxtUnidade().getSelectedIndex() != 0 && view.getTxtTipoEquip().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campos unidade e/ou tipo equipamento vazio/s, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }
+        if(view.getTxtDestino().getSelectedIndex() != 0 && view.getTxtModelo().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campos destino e/ou modelo vazio/s, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }       
+        if(view.getTxtDataSaida().getDate()==null && view.getTxtDataDevolucao().getDate()==null)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campos data saida e/ou data devolucão vazio/s, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }     
+        if(view.getTxtStatus().getSelectedIndex() == 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campo status vazio, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }    
+        if(view.getTxtTipo().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campo tipo vazio, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }       
+        if(view.getTxtTombo().getSelectedIndex() != 0 && view.getTxtSerie().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campo tombo e/serie vazios, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }
+        
+            //compara se todos os campos foram preenchidos
+            if(view.getTxtUnidade().getSelectedItem() != null && view.getTxtTipoEquip().getSelectedItem() != null && view.getTxtModelo().getSelectedItem() != null
+            && view.getTxtDestino().getSelectedItem() != null && view.getTxtNome().getSelectedItem() != null && view.getTxtDataSaida().getDate() != null && view.getTxtDataDevolucao().getDate() != null
+            && view.getTxtStatus().getSelectedItem() != null && view.getTxtTipo().getSelectedItem() != null && view.getTxtTombo().getSelectedItem() != null & view.getTxtSerie().getSelectedItem() != null)
+            {
+                    
+                    //pega um emprestimo da view Emprestimo
+                    Emprestimo emprestimo = helper.obterModeloSemID();
+                    
+                    try
+                    {
+                        //pega o modelo do objeto emprestimo do tipo emprestimo e joga dentro da variavel 
+                        String equipamentoU = emprestimo.modelo;
+                            
+                        //verifica se existe no banco de dados
+                        //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+                        Connection conexaoEmprestimo = new Conexao().Conectar();
+                        //cria objeto do tipo EmprestimoDAO chamado emprestimoDAO passando novo EmprestimoDAO recebendo conexao   
+                        EmprestimoDAO emprestimoDAO = new EmprestimoDAO(conexaoEmprestimo);                            
+                            
+                        //valor booleano chamado nExisteEmprestimo recebe emprestimoDAO.selecionaEquipEmprestimo
+                        //existe Emprestimo com equipamento que não esteja emprestado?
+                        boolean nExisteEmprestimo = emprestimoDAO.selecionaEquipEmprestimo(equipamentoU);                            
+                            
+                        //se existir emprestimo com equipamento emprestado
+                        if(nExisteEmprestimo)
+                        {
+                                
+                            JOptionPane.showMessageDialog(null, "Equipamento já emprestado!","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+                                
+                        }
+                        else if(!nExisteEmprestimo)//se não existir
+                        {
+                                
+                            //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+                            Connection conexaoEmprestimo2 = new Conexao().Conectar();
+                            //cria objeto do tipo EmprestimoDAO chamado emprestimoDAO passando novo EmprestimoDAO recebendo conexao    
+                            EmprestimoDAO emprestimoDAO2 = new EmprestimoDAO(conexaoEmprestimo2);
+                                
+                            //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+                            Connection conexaoEquipamento = new Conexao().Conectar();
+                            //cria objeto do tipo EquipamentoDAO chamado equipamentoDAO2 passando novo EquipamentoDAO recebendo conexao
+                            EquipamentoDAO equipamentoDAO2 = new EquipamentoDAO(conexaoEquipamento);
+                                
+                            //pega o modelo do objeto emprestimo do tipo emprestimo e joga dentro da variavel
+                            equipamentoU = emprestimo.modelo;
+                                
+                            //cria arraylist de equipamento chamado equip passando o objeto equipamentoDAO2 do tipo Equipamento chamando o metodo selecioneEquipporModelo
+                            Equipamento equip = equipamentoDAO2.selecioneEquipporModelo(equipamentoU);    
+                                
+                            //arraylist do tipo emprestimo chamado emprestimos recebe emprestimoDAO.inserir passando emprestimo e equip
+                            emprestimoDAO2.inserir(emprestimo,equip);
+                        
+                            //helper chama o metodo bloquear campos
+                            helper.bloquearCampos();
+                        
+                            //chama tabela equipamentos;
+                            tabelaEmprestimo();
+                        
+                            JOptionPane.showMessageDialog(null, "Equipamento emprestado com sucesso!");                                 
+                                
+                                
+                            }              
+                        
+                    }
+                    catch(SQLException ex)
+                    {
+                        
+                        JOptionPane.showMessageDialog(null, "Error ao emprestar equipamento no banco de dados! /nError:"+ex);
+                        
+                    }    
+                    
+                }    
+        
+    }            
+    
+    //metodo para atualizar emprestimo
+    public void UpdateEmprestimo()
+    {
+        
+        //comparações logicas
+        if(view.getTxtUnidade().getSelectedIndex() != 0 && view.getTxtTipoEquip().getSelectedIndex() != 0 && view.getTxtModelo().getSelectedIndex() != 0 && view.getTxtDestino().getSelectedIndex() != 0
+        && view.getTxtNome().getSelectedIndex() != 0 && view.getTxtDataSaida().getDate()==null && view.getTxtDataDevolucao().getDate()==null && view.getTxtStatus().getSelectedIndex() != 0 && view.getTxtObservacao().getText().trim().isEmpty()
+        && view.getTxtTombo().getSelectedIndex() != 0 && view.getTxtSerie().getSelectedIndex() != 0)
+        {
+            
+            JOptionPane.showMessageDialog(null, "Campos obrigatorios vazios, selecione-os!!","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }   
+        if(view.getTxtUnidade().getSelectedIndex() != 0 && view.getTxtTipoEquip().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campos unidade e/ou tipo equipamento vazio/s, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }
+        if(view.getTxtDestino().getSelectedIndex() != 0 && view.getTxtModelo().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campos destino e/ou modelo vazio/s, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }       
+        if(view.getTxtDataSaida().getDate()==null && view.getTxtDataDevolucao().getDate()==null)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campos data saida e/ou data devolucão vazio/s, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }     
+        if(view.getTxtStatus().getSelectedIndex() == 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campo status vazio, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }    
+        if(view.getTxtTipo().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campo tipo vazio, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }       
+        if(view.getTxtTombo().getSelectedIndex() != 0 && view.getTxtSerie().getSelectedIndex() != 0)
+        {    
+        
+            JOptionPane.showMessageDialog(null, "Campo tombo e/serie vazios, selecione-os","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+            
+        }
+        
+            //compara se todos os campos foram preenchidos
+            if(view.getTxtUnidade().getSelectedItem() != null && view.getTxtTipoEquip().getSelectedItem() != null && view.getTxtModelo().getSelectedItem() != null
+            && view.getTxtDestino().getSelectedItem() != null && view.getTxtNome().getSelectedItem() != null && view.getTxtDataSaida().getDate() != null && view.getTxtDataDevolucao().getDate() != null
+            && view.getTxtStatus().getSelectedItem() != null && view.getTxtTipo().getSelectedItem() != null && view.getTxtTombo().getSelectedItem() != null & view.getTxtSerie().getSelectedItem() != null)
+            {
+                
+                    //pega um emprestimo da view Emprestimo
+                    Emprestimo emprestimo = helper.obterModeloSemID();
+                    
+                    try
+                    {
+                    //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+                    Connection conexao = new Conexao().Conectar();
+                    //cria objeto do tipo EmprestimoDAO chamado emprestimoDAO passando novo EmprestimoDAO recebendo conexao
+                    EmprestimoDAO emprestimoDAO = new EmprestimoDAO(conexao);
+                    //emprestimoDAO chama metodo atualizar passando emprestimo
+                    emprestimoDAO.atualizar(emprestimo);     
+            
+                    //helper chama o metodo bloquear campos
+                    helper.bloquearCampos();            
+            
+                    //helper chama metodo limpar tela(Campos)
+                    helper.limparTela();    
+            
+                    //chama tabela emprestimo;
+                    tabelaEmprestimo();               
+            
+                    JOptionPane.showMessageDialog(null, "Equipamento atualizado com sucesso!");
+                    }
+                    //pegue exceção sql  
+                    catch(SQLException ex)
+                    {
+                        
+                        JOptionPane.showMessageDialog(null, "Error ao atualizar emprestimo no banco de dados! /nError:"+ex);
+                        
+                    }    
+                
+            }        
+        
+    }        
+    
+    //metodo para devolver emprestimo
+    public void DevolverEmprestimo()
+    {
+        
+        //pega um emprestimo da view Emprestimo
+        Emprestimo emprestimo = helper.obterModeloSemID();
+        
+        try
+        {
+            
+            //pega o modelo do objeto emprestimo do tipo emprestimo e joga dentro da variavel 
+            String equipamentoU = emprestimo.modelo;          
+            
+            //verifica se existe no banco de dados
+            //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+            Connection conexaoEmprestimo = new Conexao().Conectar();
+            //cria objeto do tipo EmprestimoDAO chamado emprestimoDAO passando novo EmprestimoDAO recebendo conexao   
+            EmprestimoDAO emprestimoDAO = new EmprestimoDAO(conexaoEmprestimo);                            
+                            
+            //valor booleano chamado nExisteEmprestimo recebe emprestimoDAO.selecionaEquipEmprestimo
+            //existe Emprestimo com equipamento que não esteja emprestado?
+            boolean nExisteEmprestimo = emprestimoDAO.selecionaEquipEmprestimo(equipamentoU);            
+            
+            if(nExisteEmprestimo)
+            {
+                
+                //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+                Connection conexaoEmprestimo2 = new Conexao().Conectar();
+                //cria objeto do tipo EmprestimoDAO chamado emprestimoDAO passando novo EmprestimoDAO recebendo conexao    
+                EmprestimoDAO emprestimoDAO2 = new EmprestimoDAO(conexaoEmprestimo2);
+                                
+                //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
+                Connection conexaoEquipamento = new Conexao().Conectar();
+                //cria objeto do tipo EquipamentoDAO chamado equipamentoDAO2 passando novo EquipamentoDAO recebendo conexao
+                EquipamentoDAO equipamentoDAO2 = new EquipamentoDAO(conexaoEquipamento);  
+                
+                Emprestimo empre =  emprestimoDAO2.selecioneEmprestimoModelo(equipamentoU);
+                
+                //cria arraylist de equipamento chamado equip passando o objeto equipamentoDAO2 do tipo Equipamento chamando o metodo selecioneEquipporModelo
+                Equipamento equip = equipamentoDAO2.selecioneEquipporModelo(equipamentoU); 
+                
+                //arraylist do tipo emprestimo chamado emprestimos recebe emprestimoDAO.devolverEmprestimo passando empre e equip
+                emprestimoDAO2.devolverEmprestimo(empre,equip);     
+                
+                JOptionPane.showMessageDialog(null, "Emprestido devolvido com sucesso!");
+                
+            }
+            else if(!nExisteEmprestimo)
+            {
+                
+                JOptionPane.showMessageDialog(null, "Equipamento não emprestado!","ATENÇÃO", JOptionPane.WARNING_MESSAGE);
+                
+            }    
+            
+        }
+        catch(SQLException ex)
+        {
+            
+            JOptionPane.showMessageDialog(null, "Error ao devolver emprestimo no banco de dados! /nError:"+ex);
+            
+        }    
+        
+    }        
+    
     //metodo tabelaEmprestimo
     public void tabelaEmprestimo()
     {
@@ -83,21 +366,27 @@ public class CadastroEmprestimoController
                 {
                     
                     //quantidade de linhas que o objeto vai ter
-                    Object[] linha = new Object[12];
+                    Object[] linha = new Object[13];
                     
                     //pegue as respectivas linhas de cada emprestimo e as sete
                     linha[0] = emprestimo.getId();
                     linha[1] = emprestimo.getUnidade().getUnidadenome();
                     linha[2] = emprestimo.getTipoequip().getTipoequipamento();
-                    linha[3] = emprestimo.getEquipamento().getModelo();
+                    linha[3] = emprestimo.getModelo();
                     linha[4] = emprestimo.getDestino().getUnidadenome();
-                    linha[5] = emprestimo.getDataSaida();
-                    linha[6] = emprestimo.getDataDevolucao();
-                    linha[7] = emprestimo.getStatus();
-                    linha[8] = emprestimo.getTipo();
-                    linha[9] = emprestimo.getObservacao();
-                    linha[10] = emprestimo.getTombo();
-                    linha[11] = emprestimo.getSerie();
+                    linha[5] = emprestimo.getNome();
+                    
+                    String dataSaida = new SimpleDateFormat("dd-MM-yyyy").format((Date)emprestimo.getDataSaida());
+                    String dataDevolucao = new SimpleDateFormat("dd-MM-yyyy").format((Date)emprestimo.getDataDevolucao());
+                    
+                    
+                    linha[6] = dataSaida;
+                    linha[7] = dataDevolucao;
+                    linha[8] = emprestimo.getStatus();
+                    linha[9] = emprestimo.getTipo();
+                    linha[10] = emprestimo.getObservacao();
+                    linha[11] = emprestimo.getTombo();
+                    linha[12] = emprestimo.getSerie();
                     
                     //adicione as linhas ao modelo
                     modelo.addRow(linha);                                        
@@ -194,8 +483,8 @@ public class CadastroEmprestimoController
         
     }        
 
-    //metodo para atualizar combobox equipamento
-   public void atualizaEquipamento() 
+    //metodo para atualizar combobox modelo
+   public void atualizarModelo() 
     {
         
         try
@@ -210,7 +499,7 @@ public class CadastroEmprestimoController
             //cria arraylist de equipamento chamado equipamentos passando o objeto equipamentoDAO do tipo Equipamento chamando o metodo selecioneAllEquipamento
             ArrayList<Equipamento> equipamentos = equipamentoDAO.selecioneAllEquipamento();
             
-            DefaultComboBoxModel combomodel = (DefaultComboBoxModel) view.getTxtEquipamento().getModel();
+            DefaultComboBoxModel combomodel = (DefaultComboBoxModel) view.getTxtModelo().getModel();
             
             combomodel.removeAllElements();
             
@@ -247,16 +536,16 @@ public class CadastroEmprestimoController
             UnidadeDAO unidadedao = new UnidadeDAO(conexao);
             
             //cria arraylist de unidade chamado unidades passando o objeto unidadedao do tipo Unidade chamando o metodo selecioneAllUnidade
-            ArrayList<Unidade> unidades = unidadedao.selecioneAllUnidade();
+            ArrayList<Unidade> unidades2 = unidadedao.selecioneAllUnidade();
          
-            DefaultComboBoxModel combomodel = (DefaultComboBoxModel) view.getTxtDestino().getModel();
+            DefaultComboBoxModel combomodel2 = (DefaultComboBoxModel) view.getTxtDestino().getModel();
             
-            combomodel.removeAllElements();
+            combomodel2.removeAllElements();
             
-            for(Unidade unidade : unidades)
+            for(Unidade unidade2 : unidades2)
             {
                 
-                combomodel.addElement(unidade);
+                combomodel2.addElement(unidade2);
                 
             }    
      }
@@ -358,7 +647,7 @@ public class CadastroEmprestimoController
             //cria arraylist de equipamento chamado equipamentos passando o objeto equipamentoDAO do tipo Equipamento chamando o metodo selecionarAllModeloPorTipoEquip passando tipoequipamentonome
             ArrayList<Equipamento> equipamentos = equipamentoDAO.selecionarAllModeloPorTipoEquip(tipoequipamentonome);
             
-            DefaultComboBoxModel combomodel = (DefaultComboBoxModel) view.getTxtEquipamento().getModel();
+            DefaultComboBoxModel combomodel = (DefaultComboBoxModel) view.getTxtModelo().getModel();
             
             combomodel.removeAllElements();
             
@@ -488,5 +777,5 @@ public class CadastroEmprestimoController
             
         } 
     
-    }        
+    }                
 }

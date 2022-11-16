@@ -1504,7 +1504,7 @@ public class CadastroEquipamentoController
             for(Equipamento equipamento : equipamentos)
             {
                 
-                combomodel.addElement(equipamento);
+                combomodel.addElement(equipamento.StatustoString());
                 
             }              
             

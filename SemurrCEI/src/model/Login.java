@@ -7,8 +7,7 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-public class Login 
+public class Login
 {
     int id;
     String usuario;

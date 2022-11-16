@@ -29,7 +29,7 @@ public class CadastroFabricanteHelper
     }   
     
     //metodo obter modelo com id
-    public Fabricante obterModeloComId()
+    public Fabricante obterModelo()
     {
         
        Integer id = Integer.parseInt(view.getTxtId().getText());//Integer id recebe convert para int view gettxtid pegue o texto

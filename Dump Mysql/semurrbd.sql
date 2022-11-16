@@ -1,11 +1,11 @@
--- phpMyAdmin SQL Dump
--- version 5.1.1
+﻿-- phpMyAdmin SQL Dump
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 02-Set-2022 às 17:17
--- Versão do servidor: 10.4.22-MariaDB
--- versão do PHP: 8.1.2
+-- Tempo de geração: 08-Nov-2022 às 15:30
+-- Versão do servidor: 10.4.24-MariaDB
+-- versão do PHP: 8.1.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -46,16 +46,27 @@ CREATE TABLE `auditoria` (
 CREATE TABLE `emprestimo` (
   `id` int(5) NOT NULL,
   `unidade` int(7) NOT NULL,
-  `equipamento` int(7) NOT NULL,
+  `tipoequip` int(7) NOT NULL,
+  `modelo` varchar(30) NOT NULL,
   `destino` int(7) NOT NULL,
-  `nome` varchar(50) NOT NULL,
+  `nome` int(7) NOT NULL,
   `dataSaida` date NOT NULL,
   `dataDevolucao` date NOT NULL,
   `status` varchar(10) NOT NULL,
+  `tipo` varchar(10) NOT NULL,
   `observacao` varchar(250) NOT NULL,
   `tombo` varchar(10) NOT NULL,
   `serie` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `emprestimo`
+--
+
+INSERT INTO `emprestimo` (`id`, `unidade`, `tipoequip`, `modelo`, `destino`, `nome`, `dataSaida`, `dataDevolucao`, `status`, `tipo`, `observacao`, `tombo`, `serie`) VALUES
+(1, 1, 1, '22MP55PQ-BK', 1, 1, '2022-11-30', '2022-11-02', 'DISPONIVEL', 'EMPRESTIMO', '', 'S/T', '001890'),
+(2, 1, 1, '22MP55PQ-BK', 1, 1, '2022-11-30', '2022-11-18', 'DISPONIVEL', 'EMPRESTIMO', '', 'S/T', '001890'),
+(3, 1, 1, '22MP55PQ-BK', 1, 1, '2022-11-25', '2022-11-11', 'DISPONIVEL', 'EMPRESTIMO', '', 'S/T', '001890');
 
 -- --------------------------------------------------------
 
@@ -71,7 +82,7 @@ CREATE TABLE `equipamento` (
   `serie` varchar(30) DEFAULT NULL,
   `fornecedor` int(7) NOT NULL,
   `fabricante` int(7) NOT NULL,
-  `modelo` varchar(10) DEFAULT NULL,
+  `modelo` varchar(30) NOT NULL,
   `status` varchar(10) DEFAULT NULL,
   `equipamento` varchar(30) DEFAULT NULL,
   `observacao` varchar(250) DEFAULT NULL
@@ -82,10 +93,9 @@ CREATE TABLE `equipamento` (
 --
 
 INSERT INTO `equipamento` (`id`, `unidade`, `tipoequip`, `tombo`, `serie`, `fornecedor`, `fabricante`, `modelo`, `status`, `equipamento`, `observacao`) VALUES
-(1, 1, 1, 'TESTE', 'TESTE', 1, 1, 'TESTE', 'FUNCIONAL', 'CONVENIO', 'TESTE'),
-(2, 1, 1, 'TTTT', 'TTTTT', 1, 1, 'TTTT', 'MANUTENCAO', 'CONVENIO', 'TTTTT'),
-(3, 2, 1, 'TESTE', 'GAB', 1, 1, 'DDD', 'MANUTENCAO', 'PATRIMONIO', 'FASD'),
-(4, 1, 2, 'SDDD', 'DSDDD', 1, 1, 'DSDSDD', 'MANUTENCAO', 'CONVENIO', 'DDSDSD');
+(1, 1, 3, 'S/T', '001890', 3, 3, '22MP55PQ-BK', 'FUNCIONAL', 'PATRIMONIO', ''),
+(2, 1, 1, '307-816', '764936', 3, 5, 'L5000', 'FUNCIONAL', 'PATRIMONIO', ''),
+(3, 1, 6, '356-179', '00024', 3, 6, 'LM1000B1', 'FUNCIONAL', 'PATRIMONIO', '');
 
 -- --------------------------------------------------------
 
@@ -103,7 +113,12 @@ CREATE TABLE `fabricante` (
 --
 
 INSERT INTO `fabricante` (`id`, `fabricantenome`) VALUES
-(1, 'AMD');
+(1, 'AMD'),
+(2, 'COMTECH'),
+(3, 'DATEN'),
+(4, 'TESTE'),
+(5, 'LOGIN'),
+(6, 'BMI');
 
 -- --------------------------------------------------------
 
@@ -121,7 +136,21 @@ CREATE TABLE `fornecedor` (
 --
 
 INSERT INTO `fornecedor` (`id`, `fornecedornome`) VALUES
-(1, 'COMTECH');
+(1, 'COMTECH'),
+(2, 'TESTE'),
+(3, 'SEMUR');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `importpdf`
+--
+
+CREATE TABLE `importpdf` (
+  `id` int(7) NOT NULL,
+  `arquivo` mediumblob NOT NULL,
+  `tipo` varchar(5) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -134,7 +163,7 @@ CREATE TABLE `login` (
   `usuario` varchar(14) NOT NULL,
   `nome` varchar(50) NOT NULL,
   `senha` varchar(20) NOT NULL,
-  `email` varchar(30) NOT NULL,
+  `email` varchar(50) NOT NULL,
   `tipo` varchar(7) NOT NULL,
   `data` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -146,7 +175,30 @@ CREATE TABLE `login` (
 INSERT INTO `login` (`id`, `usuario`, `nome`, `senha`, `email`, `tipo`, `data`) VALUES
 (1, 'marcos', 'marcos antonio', 'root', 'marcosone1998@gmail.com', 'Admin', '2022-08-20'),
 (2, 'RTDECA', 'RUY TADEU DEL REY EÇA', '123456', 'TESTE', 'Admin', '2022-08-20'),
-(4, 'REY', 'REINILSON', '123456', 'TESTE', 'Admin', '2022-08-20');
+(4, 'REY', 'REINILSON', '123456', 'TESTE', 'Admin', '2022-08-20'),
+(5, 'ROQUE.JUNIOR', 'ROQUE JUNIOR', 'jt080882', 'ROQUE.JUNIOR@SALVADOR.BA.GOV.BR', 'ADMIN', '2022-09-29');
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura da tabela `nome`
+--
+
+CREATE TABLE `nome` (
+  `id` int(7) NOT NULL,
+  `nomepessoa` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Extraindo dados da tabela `nome`
+--
+
+INSERT INTO `nome` (`id`, `nomepessoa`) VALUES
+(1, 'MANOEL DOS ANJOS'),
+(2, 'ANA LUCIA FARIAS'),
+(3, 'IVETE SACRAMENTO'),
+(4, 'ROQUE JUNIOR'),
+(5, 'ALISSON SODRÉ');
 
 -- --------------------------------------------------------
 
@@ -165,7 +217,11 @@ CREATE TABLE `tipoequipamento` (
 
 INSERT INTO `tipoequipamento` (`id`, `tipoequipamentonome`) VALUES
 (1, 'COMPUTADOR'),
-(2, 'IMPRESSORA');
+(2, 'IMPRESSORA'),
+(3, 'MONITOR'),
+(4, 'CABO HDMI'),
+(5, 'TESTE'),
+(6, 'ESTABILIZADOR');
 
 -- --------------------------------------------------------
 
@@ -184,7 +240,8 @@ CREATE TABLE `unidade` (
 
 INSERT INTO `unidade` (`id`, `unidadenome`) VALUES
 (1, 'NTI'),
-(2, 'GAB');
+(2, 'GAB'),
+(3, 'TESTE');
 
 --
 -- Índices para tabelas despejadas
@@ -195,14 +252,18 @@ INSERT INTO `unidade` (`id`, `unidadenome`) VALUES
 --
 ALTER TABLE `emprestimo`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `unidade` (`equipamento`),
-  ADD KEY `unidade_2` (`unidade`);
+  ADD KEY `unidade_2` (`unidade`),
+  ADD KEY `empres_tipoequip` (`tipoequip`),
+  ADD KEY `nome` (`nome`),
+  ADD KEY `destino` (`destino`);
 
 --
 -- Índices para tabela `equipamento`
 --
 ALTER TABLE `equipamento`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tombo` (`tombo`),
+  ADD UNIQUE KEY `serie` (`serie`),
   ADD KEY `unidade` (`unidade`),
   ADD KEY `fornecedor` (`fornecedor`),
   ADD KEY `fabricante` (`fabricante`),
@@ -221,9 +282,21 @@ ALTER TABLE `fornecedor`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Índices para tabela `importpdf`
+--
+ALTER TABLE `importpdf`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Índices para tabela `login`
 --
 ALTER TABLE `login`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Índices para tabela `nome`
+--
+ALTER TABLE `nome`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -246,43 +319,55 @@ ALTER TABLE `unidade`
 -- AUTO_INCREMENT de tabela `emprestimo`
 --
 ALTER TABLE `emprestimo`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `equipamento`
 --
 ALTER TABLE `equipamento`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `fabricante`
 --
 ALTER TABLE `fabricante`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `fornecedor`
 --
 ALTER TABLE `fornecedor`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de tabela `importpdf`
+--
+ALTER TABLE `importpdf`
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de tabela `login`
 --
 ALTER TABLE `login`
-  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(6) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT de tabela `nome`
+--
+ALTER TABLE `nome`
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de tabela `tipoequipamento`
 --
 ALTER TABLE `tipoequipamento`
-  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(7) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de tabela `unidade`
 --
 ALTER TABLE `unidade`
-  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(5) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restrições para despejos de tabelas
@@ -292,9 +377,10 @@ ALTER TABLE `unidade`
 -- Limitadores para a tabela `emprestimo`
 --
 ALTER TABLE `emprestimo`
-  ADD CONSTRAINT `destino` FOREIGN KEY (`unidade`) REFERENCES `equipamento` (`unidade`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `empres_unidade` FOREIGN KEY (`unidade`) REFERENCES `equipamento` (`unidade`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `equipamento` FOREIGN KEY (`equipamento`) REFERENCES `equipamento` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `empres_tipoequip` FOREIGN KEY (`tipoequip`) REFERENCES `tipoequipamento` (`id`),
+  ADD CONSTRAINT `empres_unidade` FOREIGN KEY (`unidade`) REFERENCES `equipamento` (`unidade`),
+  ADD CONSTRAINT `emprestimo_destino` FOREIGN KEY (`destino`) REFERENCES `unidade` (`id`),
+  ADD CONSTRAINT `emprestimo_nome` FOREIGN KEY (`nome`) REFERENCES `nome` (`id`);
 
 --
 -- Limitadores para a tabela `equipamento`

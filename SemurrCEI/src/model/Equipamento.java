@@ -1,6 +1,6 @@
 package model;
 
-public class Equipamento 
+public class Equipamento
 {
     
     int id;
@@ -147,15 +147,21 @@ public class Equipamento
 
     public void setObservacao(String observacao) {
         this.observacao = observacao;
+    }          
+    
+    public String ModelotoString()
+    {
+        
+        return getModelo();
+        
     }        
     
-    @Override
-    public String toString()
+    public String StatustoString()
     {
         
         return getStatus();
         
-    }    
+    }        
     
     public String EquiptoString()
     {

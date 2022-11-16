@@ -1,7 +1,6 @@
 package model;
 
-
-public class Unidade 
+public class Unidade
 {
     
     int id;

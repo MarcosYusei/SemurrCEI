@@ -98,7 +98,7 @@ public class CadastroUnidadeController
             Unidade unidade = new Unidade();
             
             //chama helper metodo obterModeloComId passando unidade como parametro
-            unidade = helper.obterModeloComId();         
+            unidade = helper.obterModelo();         
             
                 try {
                     //cria objeto do tipo connection conexao passando novo Conexao(conexao.java) chamando metodo conectar
@@ -145,7 +145,7 @@ public class CadastroUnidadeController
         Unidade unidade = new Unidade();
             
         //chama helper metodo obtermodelo com id passando unidade como parametro
-        unidade = helper.obterModeloComId();          
+        unidade = helper.obterModelo();          
 
             try
             {

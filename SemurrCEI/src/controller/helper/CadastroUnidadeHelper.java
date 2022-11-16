@@ -28,7 +28,7 @@ public class CadastroUnidadeHelper
     } 
     
     //metodo obter modelo com id
-    public Unidade obterModeloComId()
+    public Unidade obterModelo()
     {
         
         Integer id = Integer.parseInt(view.getTxtId().getText());//Integer id recebe convert para int view gettxtid pegue o texto

@@ -1,7 +1,6 @@
 package model;
 
-
-public class Fornecedor 
+public class Fornecedor
 {
     
     int id;

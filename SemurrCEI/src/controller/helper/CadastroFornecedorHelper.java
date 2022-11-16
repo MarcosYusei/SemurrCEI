@@ -28,7 +28,7 @@ public class CadastroFornecedorHelper
     }    
     
     //metodo obter modelo com id
-    public Fornecedor obterModeloComId()
+    public Fornecedor obterModelo()
     {
         
         Integer id = Integer.parseInt(view.getTxtId().getText());//Integer id recebe convert para int view gettxtid pegue o texto
